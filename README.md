@@ -6,7 +6,7 @@ The original repo seems to be a bit stale and does not compile on linux. So I tr
 - [x] make it compile in a docker container
 - [x] provide a docker file
 - [ ] update the readme with proper examples
-- [ ] switch to nanobind 2
+- [x] update to nanobind 2
 - [ ] skip the json part an provide a numpy adapter
 - [ ] use a minimum of dirty hacks
 
