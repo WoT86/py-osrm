@@ -1,6 +1,8 @@
 BSD 2-Clause License
 
-Copyright (c) 2023, py-osrm contributors
+Copyright (c) 2024, py-osrm contributors
+
+OpenStreetMap data in the ./test/data is licensed under ODbL and copyrighted by OSM contributors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
