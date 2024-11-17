@@ -24,7 +24,7 @@ class TestRoute:
 
     def test_route_mld(self):
         py_osrm = osrm.OSRM(
-            algorithm = "MLD",
+            algorithm = osrm.EngineConfig.Algorithm.MLD,
             storage_config = mld_data_path,
             use_shared_memory = False
         )
@@ -83,7 +83,7 @@ class TestRoute:
         py_osrm = osrm.OSRM()
         route_params = osrm.RouteParameters(
             coordinates = two_test_coordinates,
-            geometries = "geojson"
+            geometries = osrm.RouteParameters.GeometriesType.geojson
         )
         res = py_osrm.Route(route_params)
         assert(isinstance(res["routes"][0]["geometry"]["coordinates"], osrm.Array))
@@ -94,8 +94,8 @@ class TestRoute:
         route_params = osrm.RouteParameters(
             coordinates = two_test_coordinates,
             continue_straight = False,
-            overview = "false",
-            geometries = "polyline6",
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.polyline6,
             steps = True
         )
         res = py_osrm.Route(route_params)
@@ -109,10 +109,10 @@ class TestRoute:
         route_params = osrm.RouteParameters(
             coordinates = two_test_coordinates,
             continue_straight = False,
-            overview = "false",
-            geometries = "polyline",
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.polyline,
             steps = True,
-            annotations = ["speed"],            
+            annotations = [osrm.RouteParameters.AnnotationsType.speed],
         )
         res = self.py_osrm.Route(route_params)
         assert(res["routes"])
@@ -129,10 +129,10 @@ class TestRoute:
                    and not l["annotation"]["distance"] 
                    and not l["annotation"]["nodes"])
             
-        route_params.overview = "full"
+        route_params.overview = osrm.RouteParameters.OverviewType.full
         full_res = self.py_osrm.Route(route_params)
 
-        route_params.overview = "simplified"
+        route_params.overview = osrm.RouteParameters.OverviewType.simplified
         simplified_res = self.py_osrm.Route(route_params)
         
         assert(full_res["routes"][0]["geometry"] != simplified_res["routes"][0]["geometry"])
@@ -141,10 +141,10 @@ class TestRoute:
         route_params = osrm.RouteParameters(
             coordinates = two_test_coordinates,
             continue_straight = False,
-            overview = "false",
-            geometries = "polyline",
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.polyline,
             steps = True,
-            annotations = ["duration", "distance", "nodes"],            
+            annotations = [ osrm.RouteParameters.AnnotationsType.duration, osrm.RouteParameters.AnnotationsType.distance, osrm.RouteParameters.AnnotationsType.nodes ],
         )
         res = self.py_osrm.Route(route_params)
         assert(res["routes"])
@@ -161,10 +161,10 @@ class TestRoute:
                    and not l["annotation"]["datasources"] 
                    and not l["annotation"]["speed"])
             
-        route_params.overview = "full"
+        route_params.overview = osrm.RouteParameters.OverviewType.full
         full_res = self.py_osrm.Route(route_params)
 
-        route_params.overview = "simplified"
+        route_params.overview = osrm.RouteParameters.OverviewType.simplified
         simplified_res = self.py_osrm.Route(route_params)
         
         assert(full_res["routes"][0]["geometry"] != simplified_res["routes"][0]["geometry"])
@@ -173,10 +173,10 @@ class TestRoute:
         route_params = osrm.RouteParameters(
             coordinates = two_test_coordinates,
             continue_straight = False,
-            overview = "false",
-            geometries = "polyline",
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.polyline,
             steps = True,
-            annotations = ["all"],            
+            annotations = [osrm.RouteParameters.AnnotationsType.all],
         )
         res = self.py_osrm.Route(route_params)
         assert(res["routes"])
@@ -193,10 +193,10 @@ class TestRoute:
                    and l["annotation"]["datasources"] 
                    and l["annotation"]["speed"])
             
-        route_params.overview = "full"
+        route_params.overview = osrm.RouteParameters.OverviewType.full
         full_res = self.py_osrm.Route(route_params)
 
-        route_params.overview = "simplified"
+        route_params.overview = osrm.RouteParameters.OverviewType.simplified
         simplified_res = self.py_osrm.Route(route_params)
         
         assert(full_res["routes"][0]["geometry"] != simplified_res["routes"][0]["geometry"])
@@ -245,7 +245,7 @@ class TestRoute:
 
     def test_route_customlimitsmld(self):
         py_osrm = osrm.OSRM(
-            algorithm = "MLD",
+            algorithm = osrm.EngineConfig.Algorithm.MLD,
             storage_config = mld_data_path,
             max_alternatives = 10,
             use_shared_memory = False
@@ -267,7 +267,7 @@ class TestRoute:
 
     def test_route_nomotorways(self):
         py_osrm = osrm.OSRM(
-            algorithm = "MLD",
+            algorithm = osrm.EngineConfig.Algorithm.MLD,
             storage_config = mld_data_path,
             use_shared_memory = False
         )
@@ -311,7 +311,7 @@ class TestRoute:
         route_params = osrm.RouteParameters(
             coordinates = [(7.448205209414596,43.754001097311544),
                            (7.447122039202185,43.75306156811368)],
-            snapping = "any"
+            snapping = osrm.BaseParameters.SnappingType.any
         )
         res = self.py_osrm.Route(route_params)
         assert(round(res["routes"][0]["distance"] * 10) == 1315)

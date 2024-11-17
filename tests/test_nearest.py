@@ -7,7 +7,7 @@ two_test_coordinates = constants.two_test_coordinates
 class TestNearest:
     py_osrm = osrm.OSRM(
         storage_config = mld_data_path, 
-        algorithm = "MLD",
+        algorithm = osrm.EngineConfig.Algorithm.MLD,
         use_shared_memory = False
     )
 

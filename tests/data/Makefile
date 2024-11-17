@@ -1,4 +1,5 @@
 DATA_NAME:=monaco
+RELEASE_URL:=https://github.com/Project-OSRM/osrm-backend/archive/refs/tags/v5.27.1.tar.gz
 PROFILE_ROOT:=profiles
 PYOSRM_CMD:=python -m osrm
 OSRM_EXTRACT:=$(PYOSRM_CMD) extract
@@ -7,21 +8,22 @@ OSRM_PARTITION:=$(PYOSRM_CMD) partition
 OSRM_CUSTOMIZE:=$(PYOSRM_CMD) customize
 PROFILE:=$(PROFILE_ROOT)/car.lua
 
-all: data
+all: getprofiles data
 
-data: ch/$(DATA_NAME).osrm.hsgr corech/$(DATA_NAME).osrm.hsgr mld/$(DATA_NAME).osrm.partition
+getprofiles:
+	wget -c $(RELEASE_URL) -O release.tar.gz
+	tar -xf release.tar.gz osrm-backend-5.27.1/profiles --strip-components=1
+	rm release.tar.gz
+
+data: ch/$(DATA_NAME).osrm.hsgr mld/$(DATA_NAME).osrm.partition
 
 clean:
 	-rm -r $(DATA_NAME).*
-	-rm -r ch corech mld
+	-rm -r ch mld
 
 ch/$(DATA_NAME).osrm: $(DATA_NAME).osrm
 	mkdir -p ch
 	cp $(DATA_NAME).osrm.* ch/
-
-corech/$(DATA_NAME).osrm: $(DATA_NAME).osrm
-	mkdir -p corech
-	cp $(DATA_NAME).osrm.* corech/
 
 mld/$(DATA_NAME).osrm: $(DATA_NAME).osrm
 	mkdir -p mld
@@ -34,10 +36,6 @@ $(DATA_NAME).osrm: $(DATA_NAME).osm.pbf $(DATA_NAME).poly $(PROFILE)
 ch/$(DATA_NAME).osrm.hsgr: ch/$(DATA_NAME).osrm $(PROFILE)
 	@echo "Running osrm-contract..."
 	$(OSRM_CONTRACT) $<
-
-corech/$(DATA_NAME).osrm.hsgr: corech/$(DATA_NAME).osrm $(PROFILE)
-	@echo "Running osrm-contract..."
-	$(OSRM_CONTRACT) --core=0.5 $<
 
 mld/$(DATA_NAME).osrm.partition: mld/$(DATA_NAME).osrm $(PROFILE)
 	@echo "Running osrm-partition..."
