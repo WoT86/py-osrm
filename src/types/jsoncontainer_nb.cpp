@@ -25,6 +25,10 @@ void init_JSONContainer(nb::module_& m) {
         .def("__getitem__", [](json::Object& obj, const std::string& key) {
             return obj.values[key];
         })
+        .def("__contains__",[](const json::Object& obj, const std::string& key) {
+            auto search = obj.values.find(key);
+            return search != obj.values.end();
+        })
         .def("__iter__", [](const json::Object& obj) {
             return nb::make_iterator(nb::type<json::Value>(), "iterator",
                                     obj.values.begin(), obj.values.end());
