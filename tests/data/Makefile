@@ -1,4 +1,5 @@
 DATA_NAME:=monaco
+RELEASE_URL:=https://github.com/Project-OSRM/osrm-backend/archive/refs/tags/v5.27.1.tar.gz
 PROFILE_ROOT:=profiles
 PYOSRM_CMD:=python -m osrm
 OSRM_EXTRACT:=$(PYOSRM_CMD) extract
@@ -7,7 +8,12 @@ OSRM_PARTITION:=$(PYOSRM_CMD) partition
 OSRM_CUSTOMIZE:=$(PYOSRM_CMD) customize
 PROFILE:=$(PROFILE_ROOT)/car.lua
 
-all: data
+all: getprofiles data
+
+getprofiles:
+	wget -c $(RELEASE_URL) -O release.tar.gz
+	tar -xf release.tar.gz osrm-backend-5.27.1/profiles --strip-components=1
+	rm release.tar.gz
 
 data: ch/$(DATA_NAME).osrm.hsgr mld/$(DATA_NAME).osrm.partition
 

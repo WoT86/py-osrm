@@ -7,3 +7,4 @@ __pycache__
 /tests/data/corech
 /tests/data/mld
 /tests/data/monaco.osrm*
+/tests/data/profiles
