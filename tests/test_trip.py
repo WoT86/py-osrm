@@ -55,7 +55,7 @@ class TestTrip:
         py_osrm = osrm.OSRM()
         trip_parameters = osrm.TripParameters(
             coordinates = two_test_coordinates,
-            geometries = "geojson"
+            geometries = osrm.RouteParameters.GeometriesType.geojson
         )
         res = py_osrm.Trip(trip_parameters)
         for trip in res["trips"]:
@@ -66,8 +66,8 @@ class TestTrip:
         trip_parameters = osrm.TripParameters(
             coordinates = two_test_coordinates,
             steps = True,
-            annotations = ["speed"],
-            overview = "false"
+            annotations = [osrm.RouteParameters.AnnotationsType.speed],
+            overview = osrm.RouteParameters.OverviewType.false
         )
         res = py_osrm.Trip(trip_parameters)
         for trip in res["trips"]:
@@ -87,8 +87,8 @@ class TestTrip:
         trip_params = osrm.TripParameters(
             coordinates = two_test_coordinates,
             steps = True,
-            annotations = ["duration", "distance", "nodes"],     
-            overview = "false"
+            annotations = [osrm.RouteParameters.AnnotationsType.duration, osrm.RouteParameters.AnnotationsType.distance, osrm.RouteParameters.AnnotationsType.nodes],
+            overview = osrm.RouteParameters.OverviewType.false
         )
         res = self.py_osrm.Trip(trip_params)
         assert(len(res["trips"]) == 1)
@@ -109,8 +109,8 @@ class TestTrip:
         trip_params = osrm.TripParameters(
             coordinates = two_test_coordinates,
             steps = True,
-            annotations = ["all"],
-            overview = "false"        
+            annotations = [osrm.RouteParameters.AnnotationsType.all],
+            overview = osrm.RouteParameters.OverviewType.false
         )
         res = self.py_osrm.Trip(trip_params)
         assert(len(res["trips"]) == 1)
@@ -123,7 +123,7 @@ class TestTrip:
 
     def test_trip_nomotorways(self):
         py_osrm = osrm.OSRM(
-            algorithm = "MLD",
+            algorithm = osrm.EngineConfig.Algorithm.MLD,
             storage_config = mld_data_path,
             use_shared_memory = False
         )

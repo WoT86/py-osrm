@@ -45,7 +45,7 @@ class TestMatch:
     def test_match_no_geometrycompression(self):
         match_params = osrm.MatchParameters(
             coordinates = three_test_coordinates,
-            geometries = "geojson"
+            geometries = osrm.RouteParameters.GeometriesType.geojson
         )
         res = self.py_osrm.Match(match_params)
         assert(len(res["matchings"]) == 1)
@@ -66,9 +66,9 @@ class TestMatch:
             timestamps = [1424684612, 1424684616, 1424684620],
             radiuses = [4.07, 4.07, 4.07],
             steps = True,
-            annotations = ["speed"],
-            overview = "false",
-            geometries = "geojson"
+            annotations = [osrm.RouteParameters.AnnotationsType.speed],
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.geojson
         )
         res = self.py_osrm.Match(match_params)
         assert(len(res["matchings"]) == 1)
@@ -91,9 +91,9 @@ class TestMatch:
             timestamps = [1424684612, 1424684616, 1424684620],
             radiuses = [4.07, 4.07, 4.07],
             steps = True,
-            annotations = ["duration", "distance", "nodes"],
-            overview = "false",
-            geometries = "geojson"
+            annotations = [osrm.RouteParameters.AnnotationsType.duration, osrm.RouteParameters.AnnotationsType.distance, osrm.RouteParameters.AnnotationsType.nodes],
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.geojson
         )
         res = self.py_osrm.Match(match_params)
         assert(len(res["matchings"]) == 1)
@@ -115,10 +115,10 @@ class TestMatch:
             timestamps = [1424684612, 1424684616, 1424684620],
             radiuses = [4.07, 4.07, 4.07],
             steps = True,
-            annotations = ["all"],
-            overview = "false",
-            geometries = "geojson",
-            gaps = "split",
+            annotations = [osrm.RouteParameters.AnnotationsType.all],
+            overview = osrm.RouteParameters.OverviewType.false,
+            geometries = osrm.RouteParameters.GeometriesType.geojson,
+            gaps = osrm.MatchParameters.GapsType.split,
             tidy = False
         )
         res = self.py_osrm.Match(match_params)
@@ -164,7 +164,7 @@ class TestMatch:
     def test_match_without_motorways(self):
         py_osrm = osrm.OSRM(
             storage_config = mld_data_path, 
-            algorithm = "MLD",
+            algorithm = osrm.EngineConfig.Algorithm.MLD,
             use_shared_memory = False
         )
         match_params = osrm.MatchParameters(

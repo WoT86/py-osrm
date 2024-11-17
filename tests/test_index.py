@@ -16,7 +16,7 @@ class TestIndex:
         assert(str(ex.value) == "Required files are missing")
 
         with pytest.raises(RuntimeError) as ex:
-            osrm.OSRM(storage_config = "missing.osrm", algorithm = "MLD")
+            osrm.OSRM(storage_config = "missing.osrm", algorithm = osrm.EngineConfig.Algorithm.MLD)
         assert(str(ex.value) == "Config Parameters are Invalid")
 
     def test_shmemarg(self):
@@ -40,35 +40,30 @@ class TestIndex:
         with pytest.raises(TypeError):
              osrm.OSRM(True)
 
-    def test_unknownalgo(self):
-        with pytest.raises(ValueError) as ex:
-             osrm.OSRM(algorithm = "Foo")
-        assert("Invalid Algorithm: 'Foo'" in str(ex.value))
-
     def test_invalidalgo(self):
         with pytest.raises(RuntimeError) as ex:
              osrm.OSRM(algorithm = 3)
         assert(str(ex.value) == "Invalid type passed for argument: algorithm")
 
     def test_validalgos(self):
-        osrm.OSRM(algorithm = "MLD", 
+        osrm.OSRM(algorithm = osrm.EngineConfig.Algorithm.MLD, 
                      storage_config = mld_data_path, 
                      use_shared_memory = False)
         
-        osrm.OSRM(algorithm = "CH", 
+        osrm.OSRM(algorithm = osrm.EngineConfig.Algorithm.CH, 
                      storage_config = data_path,
                      use_shared_memory = False)
 
     def test_datamatchalgo(self):    
         with pytest.raises(RuntimeError) as ex:
-            osrm.OSRM(algorithm = "CoreCH", 
+            osrm.OSRM(algorithm = osrm.EngineConfig.Algorithm.CH, 
                          storage_config = mld_data_path, 
                          use_shared_memory = False)
         assert("Could not find any metrics for CH in the data." in str(ex.value))
 
         with pytest.raises(RuntimeError) as ex:
-            osrm.OSRM(algorithm = "MLD",
-                         storage_config = corech_data_path,
+            osrm.OSRM(algorithm = osrm.EngineConfig.Algorithm.MLD,
+                         storage_config = data_path,
                          use_shared_memory = False)
         assert("Could not find any metrics for MLD in the data." in str(ex.value))
 
@@ -104,7 +99,7 @@ class TestIndex:
         with pytest.raises(RuntimeError) as ex:
             osrm.OSRM(
                 storage_config = mld_data_path,
-                algorithm = "MLD",
+                algorithm = osrm.EngineConfig.Algorithm.MLD,
                 max_locations_trip = 1,
                 max_locations_viaroute = True,
                 max_locations_distance_table = False,
