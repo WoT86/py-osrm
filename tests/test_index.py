@@ -3,7 +3,6 @@ import osrm
 import constants
 
 data_path = constants.data_path
-corech_data_path = constants.corech_data_path
 mld_data_path = constants.mld_data_path
 test_memory_path = constants.test_memory_path
 
@@ -58,14 +57,6 @@ class TestIndex:
         
         osrm.OSRM(algorithm = "CH", 
                      storage_config = data_path,
-                     use_shared_memory = False)
-        
-        osrm.OSRM(algorithm = "CoreCH", 
-                     storage_config = corech_data_path,
-                     use_shared_memory = False)
-        
-        osrm.OSRM(algorithm = "CH", 
-                     storage_config = corech_data_path,
                      use_shared_memory = False)
 
     def test_datamatchalgo(self):    
